@@ -30,7 +30,7 @@ public class MyTrie implements Cloneable{
               ,parentMyTrie, parentIndex);
     }
     
-    private MyTrie MyTrie(int depth
+    private void MyTrie(int depth
                          ,int currentDepth
                          ,int numChilds
                          ,MyTrie parentMyTrie
@@ -40,34 +40,18 @@ public class MyTrie implements Cloneable{
         int[] tokenParentPath = parentMyTrie.getParentPath();
         for(int i = 0; i < depth - 1; i++)
             this.parentPath[i] = tokenParentPath[i];
-        if(currentDepth == depth) return this;
+        if(currentDepth == depth) return;
         else
             if(this.currentDepth != 0)
                 this.parentPath[this.currentDepth - 1] = parentIndex;
-
-        // String pathToPrint = ""; // to be removed
         
-        for (int i = 0; i < numChilds; i++){
-            MyTrie tmpMyTrie;
+        for (int i = 0; i < numChilds; i++)
             this.childs[i] = new MyTrie(depth
                                        ,currentDepth + 1
                                        ,numChilds
                                        ,this
                                        ,i);
-        }
-
-        //print once again. to be removed
-        // pathToPrint = "";
-        // for(int i = 0; i < this.depth - 1; i++)
-            // pathToPrint += " " + String.valueOf(this.parentPath[i]);
-        // System.out.println("MyTrie:"
-                         // + " currentDepth=" + this.currentDepth
-                         // + " numChilds=" + this.numChilds
-                         // + " value=" + this.value
-                         // + " parentPath=[" + pathToPrint + "]"
-                         // + " this.childs " + this.childs);
-
-        return this;
+        return;
     }
     
     private void initMyTrie(int depth
@@ -115,6 +99,7 @@ public class MyTrie implements Cloneable{
     public void setValue(int value){
         this.value = value;
     }
+
     
     public void printParentPath()
     {
@@ -137,34 +122,35 @@ public class MyTrie implements Cloneable{
     {
         MyTrie myTrie = new MyTrie(Integer.parseInt(args[0])
                                   ,Integer.parseInt(args[1]));
-        //myTrie.printParentPath();
-        int[] myTokenParentPath= new int[5];
+
+        int[] myTokenParentPath= new int[15];
         myTokenParentPath[0] = 0;
-        myTokenParentPath[1] = 1;
-        myTokenParentPath[2] = 2;
+        myTokenParentPath[1] = 0;
+        myTokenParentPath[2] = 1;
         myTokenParentPath[3] = -1;
-        MyTrie myTokenTrie, myParentTokenTrie, myChildTokenMyTrie ;
+        MyTrie myTokenTrie, myParentTokenTrie, myChildTokenMyTrie;
         
         myTokenTrie = myTrie.getMyTrie(myTokenParentPath);
         myTokenTrie.setValue(666);
         
         System.out.println("myTokenTrie: value=" + myTokenTrie.getValue());
         myTokenTrie.printParentPath();
-        
+
         myTokenTrie.getMyParentTrie().setValue(333);
-        myTokenTrie.getMyChilds()[2].setValue(999);
-        
+        myTokenTrie.getMyChilds()[1].setValue(999);
+
         myTokenParentPath[2] = -1;
         myParentTokenTrie = myTrie.getMyTrie(myTokenParentPath);
-        
-        myTokenParentPath[2] = 2;
-        myTokenParentPath[3] = 2;
+
+        myTokenParentPath[2] = 1;
+        myTokenParentPath[3] = 1;
         myTokenParentPath[4] = -1;
-        
+
         myChildTokenMyTrie = myTrie.getMyTrie(myTokenParentPath);
-        
+
         System.out.println("myParentTokenTrie: value=" + myParentTokenTrie.getValue());
         myParentTokenTrie.printParentPath();
+
         System.out.println("myChildTokenMyTrie: value=" + myChildTokenMyTrie.getValue());
         myChildTokenMyTrie.printParentPath();
     }
